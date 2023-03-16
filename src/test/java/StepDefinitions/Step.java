@@ -8,9 +8,10 @@ import org.openqa.selenium.WebDriver;
 public class Step {
 
     public WebDriver webDriver= Hook.driver;
+    PageObject pageObject;
     @Given("User opens URL {string}")
     public void user_opens_url(String url) {
-
+        pageObject=new PageObject(webDriver);
         webDriver.get(url);
     }
     @When("Check the title")
@@ -20,15 +21,12 @@ public class Step {
     }
     @Then("User enters Email as {string} and Password as {string}")
     public void user_enters_email_as_and_password_as(String email, String password) {
-        webDriver.findElement(By.id("Email")).clear();
-        webDriver.findElement(By.id("Email")).sendKeys(email);
-
-        webDriver.findElement(By.id("Password")).clear();
-        webDriver.findElement(By.id("Password")).sendKeys(password);
+        pageObject.setTxtEmail(email);
+        pageObject.setTxtPassword(password);
     }
     @Then("Click on Login")
     public void click_on_login() {
-        webDriver.findElement(By.xpath("//button[.='Log in']")).click();
+        pageObject.clickLogin();
     }
     @Then("Page Title should be {string}")
     public void page_title_should_be(String title) {
@@ -42,7 +40,7 @@ public class Step {
     @When("User click on Log out link")
     public void user_click_on_log_out_link() throws InterruptedException {
         Thread.sleep(3000);
-       webDriver.findElement(By.linkText("Logout")).click();
+       pageObject.clickLogout();
        Thread.sleep(2000);
     }
     @Then("close browser")
